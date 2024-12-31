@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\User;
 use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 
@@ -33,14 +34,24 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:students,email',
+            'email' => 'required|email|unique:users,email',
             'id_number' => 'required|unique:students,id_number',
             'date_of_birth' => 'required',
             'gender' => 'required|in:female,male',
             'class_id' => 'required|exists:school_classes,id',
         ]);
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
 
-        Student::create($validated);
+        Student::create([
+            'user_id' => $user->id,
+            'class_id' => $validated['class_id'],
+            'id_number' => $validated['id_number'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'gender' => $validated['gender'],
+        ]);
 
         return redirect()->back()->with(['message' => 'Student created successfully.']);
 

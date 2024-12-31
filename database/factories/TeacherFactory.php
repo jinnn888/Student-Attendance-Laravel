@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
+use App\Models\User;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Teacher>
  */
@@ -18,11 +18,10 @@ class TeacherFactory extends Factory
      */
     public function definition(): array
     {
+        $teachers = User::where('role', 'teacher')->pluck('id');
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
+            'user_id' => fake()->unique()->randomElement($teachers),
         ];
     }
 }

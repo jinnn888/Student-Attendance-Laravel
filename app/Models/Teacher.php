@@ -8,19 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Teacher extends Model
 {
     use HasFactory;
-
+    protected $guarded = ['id'];
+    
     public function class() {
         return $this->hasOne(SchoolClass::class);
     }
 
-    
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    public function user() {
+        return $this->belongsTo(User::class);
     }
-
 }

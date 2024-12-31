@@ -45,7 +45,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <x-primary-button>Submit attendance</x-primary-button>
                         @endif
                     </div>
                 </div>

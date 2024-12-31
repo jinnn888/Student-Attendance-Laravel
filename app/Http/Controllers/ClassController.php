@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SchoolClass;
+use App\Models\Teacher;
 class ClassController extends Controller
 {
     /**
@@ -11,7 +12,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        $classes = SchoolClass::all();
+        $classes = SchoolClass::with('teacher')->get();
         return view('classes.index', compact('classes'));
     }
 
@@ -20,7 +21,8 @@ class ClassController extends Controller
      */
     public function create()
     {
-        //
+        $teachers = Teacher::all();
+        return view('classes.create', compact('teachers'));
     }
 
     /**
@@ -28,7 +30,20 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'grade_level' => 'required|numeric|min:7|max:12',
+            'teacher_id' => 'required|exists:teachers,id'
+        ]);
+
+        SchoolClass::updateOrCreate([
+            'teacher_id' => $validated['teacher_id']
+        ],[
+            'name' => $validated['name'],
+            'grade_level' => $validated['grade_level'],
+        ]);
+
+        return redirect()->back()->with('success', 'Class created successfully.');
     }
 
     /**
@@ -43,8 +58,11 @@ class ClassController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        //
+    {  
+        $class = SchoolClass::findOrFail($id);
+        $teachers = Teacher::all();
+        
+        return view('classes.edit', compact('class', 'teachers'));
     }
 
     /**
@@ -52,7 +70,20 @@ class ClassController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'grade_level' => 'required|numeric|min:7|max:12',
+            'teacher_id' => ['required', 'exists:teachers,id']
+        ]);
+        $class = SchoolClass::find($id);
+
+        $class->update([
+            'teacher_id' => $validated['teacher_id'],
+            'name' => $validated['name'],
+            'grade_level' => $validated['grade_level'],
+        ]);
+
+        return redirect()->back()->with('success', 'Class updated successfully.');
     }
 
     /**
@@ -60,6 +91,9 @@ class ClassController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $class = SchoolClass::findOrFail($id);
+        $class->delete();
+
+        return redirect()->back()->with('success', 'Class deleted successfully.');
     }
 }
