@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\AttendanceController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function() {
     Route::resource('students', StudentController::class);
     Route::resource('teachers', TeacherController::class);
     Route::resource('classes', ClassController::class);
+    Route::resource('attendances', AttendanceController::class);
 });
 
 

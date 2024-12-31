@@ -13,6 +13,8 @@ class Teacher extends Model
         return $this->hasOne(SchoolClass::class);
     }
 
+    
+
     protected function casts(): array
     {
         return [

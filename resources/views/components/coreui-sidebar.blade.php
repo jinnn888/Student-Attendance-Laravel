@@ -47,6 +47,15 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('attendances.index') }}">
+                <svg class="nav-icon">
+                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-calendar"></use>
+                </svg>
+                Attendance
+            </a>
+        </li>
+
         <!-- ------------------------------------------------------------------- -->
         <li class="nav-title">Components</li>
         <li class="nav-group">

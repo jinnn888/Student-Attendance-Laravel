@@ -12,7 +12,7 @@ class SchoolClass extends Model
     protected $guarded = ['id'];
 
     public function students() {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'class_id');
     }
 
     public function teacher() {
