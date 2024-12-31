@@ -21,6 +21,7 @@
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
  
+                        <span class='text-sm text-gray-500'>You can assign this teacher to a class when making a class.</span>
                         <!-- Submit Button -->
                         <div class="mt-6">
                             <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">

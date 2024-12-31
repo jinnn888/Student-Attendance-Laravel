@@ -82,6 +82,9 @@ class TeacherController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $teacher = User::findOrFail($id);
+        $teacher->delete();
+        return redirect()->route('teachers.index')->with('success', 'New teacher updated successfully.');
+        
     }
 }

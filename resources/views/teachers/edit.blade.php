@@ -21,6 +21,7 @@
                             <input type="email" name="email" id="email" class="form-control" placeholder="Email" value='{{ $teacher->email }}' >
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
+                        <span class='text-sm text-gray-500'>You can assign this teacher to a class when making a class.</span>
  
                         <!-- Submit Button -->
                         <div class="mt-6">
