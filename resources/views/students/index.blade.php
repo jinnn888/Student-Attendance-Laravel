@@ -19,6 +19,19 @@
                                 <td>{{ $student->user->email  }}</td>
                                 <td>{{ $student->class->name  }}</td>
                                 <td>{{ $student->id_number  }}</td>
+                                <td class='flex flex-row space-x-2'>
+                                    <a href="{{ route('students.edit', $student->id) }}" class='bg-green-500 text-white rounded px-2 py-1 text-sm'>
+                                    Edit</a>
+                                    <form
+                                    onsubmit="return confirm('Are you sure?')"
+                                    method='POST'
+                                    action='{{ route('students.destroy', $student->user->id) }}'>
+                                        @method('DELETE')
+                                        @csrf
+                                        <button class='bg-red-500 text-white rounded px-2 py-1 text-sm'>Delete</button>
+                                    </form>
+
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

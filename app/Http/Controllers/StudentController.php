@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\Models\SchoolClass;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
@@ -69,24 +70,52 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Student $student)
+    public function edit(string $id)
     {
-        //
+        $student = Student::find($id);
+        $classes = SchoolClass::all();
+        return view('students.edit', compact('student', 'classes'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, string $id)
     {
-        //
+        $student = Student::find($id);
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($student->user->id)],
+            'id_number' => ['required', Rule::unique('students', 'id_number')->ignore($id)],
+            'date_of_birth' => 'required',
+            'gender' => 'required|in:female,male',
+            'class_id' => 'required|exists:school_classes,id',
+        ]);
+
+        $student->user()->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        $student->update([
+            'class_id' => $validated['class_id'],
+            'id_number' => $validated['id_number'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'gender' => $validated['gender'],
+        ]);
+
+        return redirect()->back()->with(['message' => 'Student updated successfully.']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
+    public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        return redirect()->back()->with(['message' => 'Student deleted successfully.']);
     }
 }
