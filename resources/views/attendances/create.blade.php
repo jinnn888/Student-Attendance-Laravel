@@ -36,8 +36,8 @@
                                 <tbody>
                                     @foreach ($searchedClass->students as $student)
                                     <tr>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->email }}</td>
+                                        <td>{{ $student->user->name }}</td>
+                                        <td>{{ $student->user->email }}</td>
                                         <td>{{ $student->class->name }}</td>
                                         <td>{{ $student->id_number }}</td>
                                         <td> 
